@@ -45,6 +45,8 @@
 
 + (void) playMovieWithFile: (NSString *) file;
 
++ (void) playMovieAtURL: (NSURL *)url;
+
 + (void) cancelPlaying;
 
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED

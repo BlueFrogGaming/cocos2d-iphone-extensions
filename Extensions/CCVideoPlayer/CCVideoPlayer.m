@@ -100,9 +100,7 @@ static  CCVideoPlayerImpl *_impl = nil;
 			
 			// If the current thread is the main thread,than
 			// this message will be processed immediately.
-			[ _impl performSelectorOnMainThread: @selector(playMovieAtURL:) 
-									 withObject: movieURL
-								  waitUntilDone: [NSThread isMainThread]  ];
+            [self playMovieAtURL:movieURL];
 		}
 	}    
 }
@@ -146,15 +144,20 @@ static  CCVideoPlayerImpl *_impl = nil;
         NSURL *url = [NSURL fileURLWithPath: cachedVideoPath];
         // If the current thread is the main thread,than
 		// this message will be processed immediately.
-		[ _impl performSelectorOnMainThread: @selector(playMovieAtURL:) 
-								 withObject: url
-							  waitUntilDone: [NSThread isMainThread]  ];
+        [self playMovieAtURL:url];
         return;
     }
     
     // else play from our bundle   
     [self playMovieWithResourceFile: file];
     
+}
+
++ (void) playMovieAtURL: (NSURL *)url
+{
+    [ _impl performSelectorOnMainThread: @selector(playMovieAtURL:) 
+                             withObject: url
+                          waitUntilDone: [NSThread isMainThread]  ];
 }
 
 + (void) cancelPlaying
