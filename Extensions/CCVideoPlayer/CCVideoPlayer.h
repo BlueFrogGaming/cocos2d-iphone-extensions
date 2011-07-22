@@ -29,7 +29,10 @@
 #import <Foundation/Foundation.h>
 
 @protocol CCVideoPlayerDelegate <NSObject>
-
+@optional
+- (void) movieIsBuffering;
+- (void) movieIsNotBuffering;
+@required
 - (void) movieStartsPlaying;
 - (void) moviePlaybackFinished;
 

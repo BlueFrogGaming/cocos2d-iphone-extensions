@@ -75,6 +75,11 @@
 #endif
 #endif
 	
+    // Register for the load state changed notification.
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(moviePlayerLoadStateChanged:) 
+                                                 name:MPMoviePlayerLoadStateDidChangeNotification object:theMovie];
+    
 	
     // Register for the playback finished notification.
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -126,6 +131,18 @@
 	}
 }
 
+//----- loadStastChangedCallback
+-(void)moviePlayerLoadStateChanged:(NSNotification*)aNotification
+{
+    MPMoviePlayerController* theMovie = [aNotification object];
+    if ([theMovie loadState] == MPMovieLoadStateStalled)
+        if ([_delegate respondsToSelector:@selector(movieIsBuffering)])
+            [_delegate movieIsBuffering];
+    else
+        if ([_delegate respondsToSelector:@selector(movieIsNotBuffering)])
+            [_delegate movieIsNotBuffering];
+}
+
 
 //----- movieFinishedCallback -----
 -(void)movieFinishedCallback:(NSNotification*)aNotification
@@ -137,6 +154,9 @@
                                                     name:MPMoviePlayerPlaybackDidFinishNotification
                                                   object:theMovie];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:MPMoviePlayerLoadStateDidChangeNotification
+                                                  object:theMovie];
     
 	
     // Release the movie instance created in playMovieAtURL:
