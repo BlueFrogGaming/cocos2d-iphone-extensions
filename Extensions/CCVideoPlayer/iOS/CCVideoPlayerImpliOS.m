@@ -135,12 +135,13 @@
 -(void)moviePlayerLoadStateChanged:(NSNotification*)aNotification
 {
     MPMoviePlayerController* theMovie = [aNotification object];
-    if ([theMovie loadState] == MPMovieLoadStateStalled)
+    if ([theMovie loadState] == MPMovieLoadStateStalled) {
         if ([_delegate respondsToSelector:@selector(movieIsBuffering)])
             [_delegate movieIsBuffering];
-    else
+    } else {
         if ([_delegate respondsToSelector:@selector(movieIsNotBuffering)])
             [_delegate movieIsNotBuffering];
+    }
 }
 
 
